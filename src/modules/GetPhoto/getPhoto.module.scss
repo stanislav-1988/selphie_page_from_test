@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 50px;
+  padding: 16px;
+  width: 70%;
+  background-color: var(--background-elements-primary);
+  box-shadow: 5px 5px 20px 10px rgba(97, 122, 125, 0.5);
+  
+}

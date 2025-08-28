@@ -1,0 +1,84 @@
+{
+  "name": "my-todo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "start:https": "sudo HTTPS=true SSL_CRT_FILE=/etc/ssl/localhost.pem SSL_KEY_FILE=/etc/ssl/localhost-key.pem react-scripts start",
+    "build": "npm run release:patch && react-scripts build",
+    "test": "npx playwright test",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "eslint": "eslint src",
+    "eslint:fix": "npm run eslint -- --fix",
+    "precommit": "lint-staged",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch --no-git-tag-version"
+  },
+  "dependencies": {
+    "@types/node": "^16.18.38",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "airbnb": "^0.0.2",
+    "axios": "^0.26.1",
+    "classnames": "^2.3.2",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.0.3",
+    "mobx": "^6.12.0",
+    "mobx-react-lite": "^4.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.2",
+    "react-input-mask": "^2.0.4",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "5.0.1",
+    "sass": "^1.77.6",
+    "the-new-css-reset": "^1.9.0",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "@typescript/lib-dom": "npm:@types/web@^0.0.104",
+    "eslint": "^8.44.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "git add --all",
+      "npm run eslint:fix",
+      "prettier --write",
+      "node_modules/.bin/eslint ./src --max-warnings=0"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

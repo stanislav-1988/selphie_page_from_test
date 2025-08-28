@@ -1,0 +1,103 @@
+.registrationList {
+   position: absolute;
+   top:50%;
+   left:50%;
+   transform:translate(-50%, -50%);
+   overflow: hidden;
+   color: aliceblue;
+
+   & .registrationForm {
+      margin-top: 50px;
+      height: calc(100vh - 200px);
+      overflow-y: auto;
+
+      & h3 {
+         margin: 0;
+         margin-bottom: 9px;
+         width: 311px;
+         height: 28px;
+         font-family: 'Roboto';
+         font-style: normal;
+         font-weight: 500;
+         font-size: 20px;
+         line-height: 28px;
+         text-align: center;
+      }
+      & .form {
+         display: flex;
+         flex-direction: column;
+         & label {
+            margin-top: 12px;
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 22px;
+            color: aliceblue;
+         }
+         & .submitCreate {
+            cursor: pointer;
+            background: #1890FF;
+            border-radius: 4px;
+            margin: 0;
+            color: #FFFFFF;
+         }
+         & .submitCreate:focus {
+            border: 2px solid #090a0a56;
+         }
+         & .password-error {
+            background-color: red;
+         }
+         & p {
+            margin: 0;
+            margin-bottom: 12px;
+            color: #F5222D;
+         }
+         & .agreementContainer {
+            display: flex;
+            align-items: flex-start;
+            border-top: 1px solid var(--text-tertiary);
+            margin: 11px 0;
+            margin-top: 23px;
+            padding-top: 8px;
+            & .agreement {
+               min-width: 15px;
+               min-height: 15px;
+               border: 1px solid var(--tertiary);
+               border-radius: 50%;
+               margin-top: 5px;
+            }
+            & .agreement:checked {
+               background-color: var(--tertiary);
+            }
+            & label {
+               display: block;
+               font-family: 'Roboto';
+               font-style: normal;
+               font-weight: 400;
+               width: 250px;
+               font-size: 14px;
+               line-height: 22px;
+               color: aliceblue;
+               margin: 0;
+               padding: 0 8px;
+            }
+         }
+      }
+      & .registrationLink {
+         display: block;
+         font-family: 'Roboto';
+         font-style: normal;
+         font-weight: 400;
+         font-size: 12px;
+         text-align: center;
+         line-height: 20px;
+         color: #8C8C8C;
+         margin-top: 8px;
+         & a {
+            text-decoration: none;
+            color: #1890FF;
+         }
+      }
+  }
+}

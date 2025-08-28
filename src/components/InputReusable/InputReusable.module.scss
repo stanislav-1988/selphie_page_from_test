@@ -1,0 +1,43 @@
+.InputReusable {
+    display: flex;
+    height: 44px;
+    padding: 10px;
+    border: 1px solid rgb(26, 135, 231);
+    border-radius: 12px;
+    margin-bottom: 12px;
+
+    & .styleInput {
+        caret-color: auto;
+        width: 100%;
+        margin-top: 0px;
+        }
+    & .styleInput::placeholder {
+        color: rgb(153, 156, 159);
+        }
+    & .label {
+        align-self: flex-end;
+        position: relative;
+        right: 35px;
+        bottom: 8px;
+    }
+    
+}
+
+.error {
+    border: 1px solid var(--text-error);
+}
+
+
+.errorInfo {
+    color: var(--text-error);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    margin-top: -6px;
+    margin-bottom: 12px;
+}
+
+.visibleButtonClear {
+    width: 100%;
+}

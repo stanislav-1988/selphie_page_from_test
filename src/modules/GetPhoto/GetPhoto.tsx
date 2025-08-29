@@ -4,14 +4,17 @@ import React, {
   FC, useCallback, useEffect, useRef,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { LoaderComponent } from '../../components';
 import { cleanStream, getUserMedia, setupCameraStream } from '../../helper/media';
 import useMobileDetect from '../../hooks/useBreakpointState';
 import myStore from '../../store/myStore';
 import styles from './getPhoto.module.scss';
+import { ROUTES } from '../../providers';
 
 export const GetPhoto: FC = observer(() => {
+  const navigate = useNavigate();
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
@@ -120,6 +123,11 @@ export const GetPhoto: FC = observer(() => {
     }
   };
 
+  const handleButtonClick = () => {
+    navigate(ROUTES.ROOT_ROUTE);
+    window.location.reload();
+  };
+
   return (
 
     <div className={styles.container}>
@@ -167,6 +175,8 @@ export const GetPhoto: FC = observer(() => {
       )}
       <div className={styles.content}>
         <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
+        <button className={styles.button} type="button" onClick={handleButtonClick}>Сменить параметры</button>
+        {renderCollection && <span className={styles.span}>Вы можете загрузить отдельное фото кликнув по необходимому, можете скачать все</span>}
         <div className={styles.cardResultContainer}>
           {renderCollection && frameCollection.map((el, i) => (
             <div key={`Photo-${i}`} className={styles.cardResult}>

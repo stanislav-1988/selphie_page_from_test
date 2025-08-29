@@ -25,11 +25,25 @@
      justify-content: center;
      align-items: center;
      border-radius: 12px;
-     color:rgb(230, 235, 236);
      background-color: rgba(248, 250, 247, 0.4);
+     margin: auto;
+     color: rgb(107, 172, 8);
+     text-align: center;
+     text-shadow: 2px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+     font-size: 2rem;
+     margin-top: 20px;
+     width: 100%;
    }
    & .button:hover {
      color: rgb(52, 238, 64);
+   }
+   & .span {
+     margin: auto;
+     color: rgb(107, 172, 8);
+     text-align: center;
+     text-shadow: 2px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
+     font-size: 2rem;
+      margin-top: 20px;
    }
 
    & .cardResultContainer {

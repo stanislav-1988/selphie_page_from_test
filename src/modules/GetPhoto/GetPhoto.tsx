@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import React, {
   FC, useCallback, useEffect, useRef,
@@ -9,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { LoaderComponent } from '../../components';
 import { cleanStream, getUserMedia, setupCameraStream } from '../../helper/media';
 import useMobileDetect from '../../hooks/useBreakpointState';
+import { ROUTES } from '../../providers';
 import myStore from '../../store/myStore';
 import styles from './getPhoto.module.scss';
-import { ROUTES } from '../../providers';
 
 export const GetPhoto: FC = observer(() => {
   const navigate = useNavigate();
@@ -136,8 +137,8 @@ export const GetPhoto: FC = observer(() => {
         id="videoContainer"
         style={isMobile()
           ? {
-            minHeight: 'calc(100dvh - 68px)',
-            width: `${window.innerWidth - 24}px`,
+            height: 'calc(100dvh - 88px)',
+            width: '100%',
             overflow: 'hidden',
             touchAction: 'none',
             userSelect: 'none',
@@ -173,7 +174,7 @@ export const GetPhoto: FC = observer(() => {
         {!isVideoLoaded && <LoaderComponent />}
       </div>
       )}
-      <div className={styles.content}>
+      <div className={classNames(styles.content, (!renderCollection && isMobile() && styles.contentMobile))}>
         <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
         <button className={styles.button} type="button" onClick={handleButtonClick}>Сменить параметры</button>
         {renderCollection && <span className={styles.span}>Вы можете загрузить отдельное фото кликнув по необходимому, можете скачать все</span>}

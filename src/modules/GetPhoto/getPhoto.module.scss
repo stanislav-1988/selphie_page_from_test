@@ -16,6 +16,12 @@
     flex-direction: column;
     width: 100%;
   }
+  & .contentMobile {
+    position: absolute;
+    bottom: 0px;
+    max-width: 100%;
+    overflow: hidden;
+  }
     & .button {
      color: var(--text-button);
      font-size: 20px;

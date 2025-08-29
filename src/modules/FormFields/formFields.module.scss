@@ -2,21 +2,23 @@
    position: absolute;
    top:50%;
    left:50%;
-   transform:translate(-50%, -50%);
+   transform: translate(-50%, -50%);
+   max-width: 500px;
+   padding: 20px;
    overflow: hidden;
    color: aliceblue;
+   margin-top: 50px;
    
    & .select {
       display: flex;
       padding: 10px;
       border-radius: 10px;
-    border: 2px solid rgb(26, 135, 231);
+      border: 2px solid rgb(26, 135, 231);
    }
 
    & .parameterForm {
-      margin-top: 50px;
-      height: calc(100vh - 200px);
-      overflow-y: auto;
+      height: calc(100vh - 130px);
+      overflow-x: hidden;
 
       & h3 {
          margin: 0;

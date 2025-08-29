@@ -1,27 +1,19 @@
 import { observer } from 'mobx-react-lite';
-import React, { ChangeEvent, FC, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import React, { ChangeEvent, FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { ConfirmButton } from '../../components/ConfirmButton';
+import { InputLabel } from '../../components/InputLabel';
+import { InputReusable } from '../../components/InputReusable';
+import { ROUTES } from '../../providers';
 import myStore from '../../store/myStore';
-import { ConfirmButton } from '../ConfirmButton';
-import { InputLabel } from '../InputLabel';
-import { InputReusable } from '../InputReusable';
 import styles from './formFields.module.scss';
 
 export const FormFields: FC = observer(() => {
   const {
     width, height, format, setFormat, setHeight, setWidth, clearStor,
   } = myStore;
-
-  useEffect(() => {
-    const localStorageData = localStorage.getItem('TEST_DATA');
-    if (localStorageData) {
-      const data = JSON.parse(localStorageData);
-      setWidth(data.width);
-      setHeight(data.height);
-      setFormat(data.format);
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const handleFormatChange = (event: any) => {
     console.debug(event.target.value);
@@ -37,8 +29,12 @@ export const FormFields: FC = observer(() => {
   };
 
   const handleClickButton = () => {
-    const savedParameters = { width, height, format };
+    const savedParameters = {
+      width, height, format,
+      // textHeaderButton: 'Сменить параметры',
+    };
     localStorage.setItem('TEST_DATA', JSON.stringify(savedParameters));
+    navigate(ROUTES.GET_PHOTO);
   };
 
   const handleResetButton = () => {
@@ -46,7 +42,7 @@ export const FormFields: FC = observer(() => {
     clearStor();
   };
 
-  return createPortal(
+  return (
     <div className={styles.parameterList}>
       <div className={styles.parameterForm}>
         <div className={styles.form}>
@@ -76,7 +72,6 @@ export const FormFields: FC = observer(() => {
           <ConfirmButton onClick={handleResetButton} value="Параметры по умолчанию" />
         </div>
       </div>
-    </div>,
-    document.getElementById('portal') as HTMLElement,
+    </div>
   );
 });

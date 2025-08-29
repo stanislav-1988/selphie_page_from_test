@@ -7,6 +7,8 @@ class MyStore {
 
   height: string = '1220';
 
+  textHeaderButton: string = '';
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -27,6 +29,10 @@ class MyStore {
 
   setHeight = (height: string) => {
     this.height = height;
+  };
+
+  setTextHeaderButton = (textHeaderButton: string) => {
+    this.textHeaderButton = textHeaderButton;
   };
 }
 

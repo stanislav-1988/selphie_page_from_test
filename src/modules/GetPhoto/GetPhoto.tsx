@@ -93,16 +93,31 @@ export const GetPhoto: FC = observer(() => {
     }
   };
 
+  const downloadFile = (blob: string, index: number) => {
+    const url = blob;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Photo-${index}`); // Устанавливаем имя файла
+    document.body.appendChild(link);
+    link.click();
+    link?.parentNode?.removeChild(link); // Очистка
+    window.URL.revokeObjectURL(url); // Освобождение ресурса
+  };
+
   const handleGetPhoto = () => {
-    const interval = setInterval(() => {
-      captureSelfie();
-    }, (1000 / framesCount));
-    setTimeout(() => {
-      clearInterval(interval);
-      cleanStream(videoRef);
-      setRenderCollection(true);
-      setIsVideoLoaded(false);
-    }, 1000);
+    if (!renderCollection) {
+      const interval = setInterval(() => {
+        captureSelfie();
+      }, (1000 / framesCount));
+      setTimeout(() => {
+        clearInterval(interval);
+        cleanStream(videoRef);
+        setRenderCollection(true);
+        setIsVideoLoaded(false);
+      }, 1000);
+    } else {
+      frameCollection.forEach((el, i) => downloadFile(el, i));
+    }
   };
 
   return (
@@ -151,11 +166,13 @@ export const GetPhoto: FC = observer(() => {
       </div>
       )}
       <div className={styles.content}>
-        <button className={styles.button} type="button" onClick={handleGetPhoto}>Собрать фото</button>
+        <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
         <div className={styles.cardResultContainer}>
           {renderCollection && frameCollection.map((el, i) => (
-            <div key={`${el.slice(0, 5)}${i}`} className={styles.cardResult}>
+            <div key={`Photo-${i}`} className={styles.cardResult}>
               <img
+                onClick={() => downloadFile(el, i)}
+                id={`Photo-${i}`}
                 alt="Verification in progress"
                 src={el}
               />

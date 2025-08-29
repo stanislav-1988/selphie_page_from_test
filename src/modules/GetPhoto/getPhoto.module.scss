@@ -2,11 +2,33 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  justify-content: flex-start;
+  overflow: scroll;
   margin: auto;
-  margin-top: 50px;
-  padding: 16px;
-  width: 70%;
-  background-color: var(--background-elements-primary);
-  box-shadow: 5px 5px 20px 10px rgba(97, 122, 125, 0.5);
-  
+  width: 100%;
+  height: calc(100vh - 100px);
+  background: url(https://cssanimation.rocks/images/random/space2.jpg) repeat center;
+
+  & .content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+    & .button {
+     color: var(--text-button);
+     font-size: 20px;
+     font-style: normal;
+     font-weight: 900;
+     line-height: 24px;
+     justify-content: center;
+     align-items: center;
+     border-radius: 12px;
+     color:rgb(230, 235, 236);
+     background-color: rgba(248, 250, 247, 0.4);
+   }
+   & .button:hover {
+     color: rgb(52, 238, 64);
+   }
 }

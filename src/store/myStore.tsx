@@ -3,11 +3,23 @@ import { makeAutoObservable } from 'mobx';
 class MyStore {
   format: string = 'image/png';
 
-  width: string = '900';
+  maxWidth: number = 900;
 
-  height: string = '1220';
+  maxHeight: number = 1220;
 
   textHeaderButton: string = '';
+
+  minWidth: number = 600;
+
+  minHeight: number = 800;
+
+  videoRef!: React.MutableRefObject<HTMLVideoElement | null>;
+
+  isVideoLoaded: boolean = false;
+
+  isCameraRetry: boolean = true;
+
+  isAuthenticationLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -15,24 +27,40 @@ class MyStore {
 
   clearStor = () => {
     this.format = 'image/png';
-    this.height = '1220';
-    this.width = '900';
+    this.maxHeight = 1220;
+    this.maxWidth = 900;
   };
 
   setFormat = (format: string) => {
     this.format = format;
   };
 
-  setWidth = (width: string) => {
-    this.width = width;
+  setWidth = (width: number) => {
+    this.maxWidth = width;
   };
 
-  setHeight = (height: string) => {
-    this.height = height;
+  setHeight = (height: number) => {
+    this.maxHeight = height;
   };
 
   setTextHeaderButton = (textHeaderButton: string) => {
     this.textHeaderButton = textHeaderButton;
+  };
+
+  setVideoRef = (payload: React.MutableRefObject<HTMLVideoElement | null>) => {
+    this.videoRef = payload;
+  };
+
+  setIsVideoLoaded = (isVideoLoaded: boolean) => {
+    this.isVideoLoaded = isVideoLoaded;
+  };
+
+  setIsCameraRetry = (payload: boolean) => {
+    this.isCameraRetry = payload;
+  };
+
+  setIsAuthenticationLoading = (payload: boolean) => {
+    this.isAuthenticationLoading = payload;
   };
 }
 

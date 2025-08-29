@@ -20,7 +20,7 @@
     flex-direction: column;
     min-height: 100vh;
     min-width: 100%;
-    overflow-x: scroll;
+    overflow: hidden;
     max-width: 1440px;
     background-color: var(--background-solid-basic);
   }

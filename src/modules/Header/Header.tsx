@@ -12,12 +12,7 @@ export const Header: FC = observer(() => {
 
   const handleButtonClick = () => {
     navigate(ROUTES.ROOT_ROUTE);
-    // const localStorageData = localStorage.getItem('TEST_DATA');
-    // if (localStorageData) {
-    //   const data = JSON.parse(localStorageData);
-    //   data.textHeaderButton = '';
-    //   localStorage.setItem('TEST_DATA', JSON.stringify(data));
-    // }
+    window.location.reload();
   };
 
   return (

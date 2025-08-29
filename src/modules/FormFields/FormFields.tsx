@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { InputLabel } from '../../components/InputLabel';
 import { InputReusable } from '../../components/InputReusable';
+import { cleanStream } from '../../helper/media';
 import { ROUTES } from '../../providers';
 import myStore from '../../store/myStore';
 import styles from './formFields.module.scss';
 
 export const FormFields: FC = observer(() => {
   const {
-    width, height, format, setFormat, setHeight, setWidth, clearStor,
+    maxWidth, maxHeight, format, videoRef, setFormat, setHeight, setWidth, clearStor,
   } = myStore;
   const navigate = useNavigate();
 
@@ -21,16 +22,16 @@ export const FormFields: FC = observer(() => {
   };
 
   const handleWidthChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setWidth(e.target.value);
+    setWidth(Number(e.target.value));
   };
 
   const handleHeight = (e: ChangeEvent<HTMLInputElement>) => {
-    setHeight(e.target.value);
+    setHeight(Number(e.target.value));
   };
 
   const handleClickButton = () => {
     const savedParameters = {
-      width, height, format,
+      maxWidth, maxHeight, format,
       // textHeaderButton: 'Сменить параметры',
     };
     localStorage.setItem('TEST_DATA', JSON.stringify(savedParameters));
@@ -40,6 +41,7 @@ export const FormFields: FC = observer(() => {
   const handleResetButton = () => {
     localStorage.removeItem('TEST_DATA');
     clearStor();
+    cleanStream(videoRef);
   };
 
   return (
@@ -52,14 +54,14 @@ export const FormFields: FC = observer(() => {
           <InputReusable
             id="width"
             type="number"
-            value={width}
+            value={`${maxWidth}`}
             onChange={handleWidthChange}
           />
           <InputLabel text="Высота" />
           <InputReusable
             id="height"
             type="number"
-            value={height}
+            value={`${maxHeight}`}
             onChange={handleHeight}
           />
           <InputLabel text="Формат" />
@@ -68,7 +70,7 @@ export const FormFields: FC = observer(() => {
             <option value="image/jpeg" selected={format === 'image/jpeg'}>image/jpeg</option>
             <option value="image/webp" selected={format === 'image/webp'}>image/webp</option>
           </select>
-          <ConfirmButton onClick={handleClickButton} value="Все гуд? собираем?" />
+          <ConfirmButton onClick={handleClickButton} value="ДАЛЕЕ" />
           <ConfirmButton onClick={handleResetButton} value="Параметры по умолчанию" />
         </div>
       </div>

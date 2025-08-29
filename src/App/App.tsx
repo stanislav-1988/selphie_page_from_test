@@ -9,17 +9,16 @@ import styles from './App.module.scss';
 
 export const App: FC = () => {
   const {
-    setFormat, setHeight, setWidth, setTextHeaderButton,
+    setFormat, setHeight, setWidth,
   } = myStore;
 
   useEffect(() => {
     const localStorageData = localStorage.getItem('TEST_DATA');
     if (localStorageData) {
       const data = JSON.parse(localStorageData);
-      setWidth(data.width);
-      setHeight(data.height);
-      setFormat(data.format);
-      setTextHeaderButton(data.textHeaderButton);
+      if (data.width) setWidth(data.width);
+      if (data.height) setHeight(data.height);
+      if (data.format) setFormat(data.format);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

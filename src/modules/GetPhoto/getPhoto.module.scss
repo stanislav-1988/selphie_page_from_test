@@ -31,4 +31,20 @@
    & .button:hover {
      color: rgb(52, 238, 64);
    }
+
+   & .cardResultContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+   
+      & .cardResult {
+        max-width: 200px;
+        max-height: 200px;
+        overflow: hidden;
+        margin: 8px;
+        border: 2px solid rgb(0, 255, 17);
+        border-radius: 10px;
+      }
+   }
 }

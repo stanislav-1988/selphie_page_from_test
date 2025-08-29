@@ -1,18 +1,21 @@
+/* eslint-disable react/no-array-index-key */
 import { observer } from 'mobx-react-lite';
 import React, {
-  FC, useCallback, useEffect, useRef, useState,
+  FC, useCallback, useEffect, useRef,
+  useState,
 } from 'react';
 
 import { LoaderComponent } from '../../components';
-import { getUserMedia, setupCameraStream } from '../../helper/media';
+import { cleanStream, getUserMedia, setupCameraStream } from '../../helper/media';
 import useMobileDetect from '../../hooks/useBreakpointState';
 import myStore from '../../store/myStore';
 import styles from './getPhoto.module.scss';
 
 export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
+  const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, isAuthenticationLoading, isCameraRetry, maxWidth, maxHeight, minWidth, minHeight, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, maxHeight, minWidth, minHeight, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -69,7 +72,7 @@ export const GetPhoto: FC = observer(() => {
     }
   }, [isCameraRetry, isVideoLoaded, setIsCameraRetry, setupCameraStreamResult]);
 
-  const captureSelfie = useCallback(() => {
+  const captureSelfie = () => {
     const player = videoRef.current;
     if (!player) return;
     const canvas = document.createElement('canvas');
@@ -85,24 +88,27 @@ export const GetPhoto: FC = observer(() => {
         player.videoHeight || minHeight,
       );
       canvas.toBlob(() => {
-        const newFrameCollection = [...frameCollection, canvas.toDataURL('image/png', 1.0)];
-        setFrameCollection(newFrameCollection);
+        setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);
       }, 'image/png', 1.0);
     }
-  }, [frameCollection, minHeight, minWidth]);
+  };
 
-  useEffect(() => {
-    if (isAuthenticationLoading) {
-      videoRef.current?.pause();
-    }
-    if (isVideoLoaded) {
-      setTimeout(() => captureSelfie(), 100);
-    }
-  }, [captureSelfie, isAuthenticationLoading, isVideoLoaded]);
+  const handleGetPhoto = () => {
+    const interval = setInterval(() => {
+      captureSelfie();
+    }, (1000 / framesCount));
+    setTimeout(() => {
+      clearInterval(interval);
+      cleanStream(videoRef);
+      setRenderCollection(true);
+      setIsVideoLoaded(false);
+    }, 1000);
+  };
 
   return (
 
     <div className={styles.container}>
+      {!renderCollection && (
       <div
         id="videoContainer"
         style={isMobile()
@@ -143,8 +149,19 @@ export const GetPhoto: FC = observer(() => {
         />
         {!isVideoLoaded && <LoaderComponent />}
       </div>
+      )}
       <div className={styles.content}>
-        <button className={styles.button} type="button" onClick={() => {}}>Собрать фото</button>
+        <button className={styles.button} type="button" onClick={handleGetPhoto}>Собрать фото</button>
+        <div className={styles.cardResultContainer}>
+          {renderCollection && frameCollection.map((el, i) => (
+            <div key={`${el.slice(0, 5)}${i}`} className={styles.cardResult}>
+              <img
+                alt="Verification in progress"
+                src={el}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

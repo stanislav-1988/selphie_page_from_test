@@ -11,6 +11,8 @@ class MyStore {
 
   minWidth: number = 600;
 
+  framesCount: number = 15;
+
   minHeight: number = 800;
 
   videoRef!: React.MutableRefObject<HTMLVideoElement | null>;
@@ -29,18 +31,33 @@ class MyStore {
     this.format = 'image/png';
     this.maxHeight = 1220;
     this.maxWidth = 900;
+    this.minHeight = 800;
+    this.minWidth = 600;
+    this.framesCount = 15;
   };
 
   setFormat = (format: string) => {
     this.format = format;
   };
 
-  setWidth = (width: number) => {
+  setMaxWidth = (width: number) => {
     this.maxWidth = width;
   };
 
-  setHeight = (height: number) => {
+  setMaxHeight = (height: number) => {
     this.maxHeight = height;
+  };
+
+  setMinWidth = (width: number) => {
+    this.minWidth = width;
+  };
+
+  setMinHeight = (height: number) => {
+    this.minHeight = height;
+  };
+
+  setFramesCount = (framesCount: number) => {
+    this.framesCount = framesCount;
   };
 
   setTextHeaderButton = (textHeaderButton: string) => {

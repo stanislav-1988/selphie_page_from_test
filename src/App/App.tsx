@@ -9,16 +9,19 @@ import styles from './App.module.scss';
 
 export const App: FC = () => {
   const {
-    setFormat, setHeight, setWidth,
+    setFormat, setMaxHeight, setMaxWidth, setFramesCount, setMinWidth, setMinHeight,
   } = myStore;
 
   useEffect(() => {
     const localStorageData = localStorage.getItem('TEST_DATA');
     if (localStorageData) {
       const data = JSON.parse(localStorageData);
-      if (data.width) setWidth(data.width);
-      if (data.height) setHeight(data.height);
+      if (data.maxWidth) setMaxWidth(data.maxWidth);
+      if (data.maxHeight) setMaxHeight(data.maxHeight);
+      if (data.minWidth) setMinWidth(data.minWidth);
+      if (data.minHeight) setMinHeight(data.minHeight);
       if (data.format) setFormat(data.format);
+      if (data.framesCount) setFramesCount(data.framesCount);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

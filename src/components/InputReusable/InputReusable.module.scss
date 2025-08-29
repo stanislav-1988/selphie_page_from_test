@@ -2,13 +2,13 @@
     display: flex;
     height: 44px;
     padding: 10px;
-    border: 1px solid rgb(26, 135, 231);
+    border: 2px solid rgb(26, 135, 231);
     border-radius: 12px;
     margin-bottom: 12px;
 
     & .styleInput {
         caret-color: auto;
-        width: 100%;
+        min-width: 130%;
         margin-top: 0px;
         }
     & .styleInput::placeholder {

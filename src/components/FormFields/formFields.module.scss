@@ -1,12 +1,19 @@
-.registrationList {
+.parameterList {
    position: absolute;
    top:50%;
    left:50%;
    transform:translate(-50%, -50%);
    overflow: hidden;
    color: aliceblue;
+   
+   & .select {
+      display: flex;
+      padding: 10px;
+      border-radius: 10px;
+    border: 2px solid rgb(26, 135, 231);
+   }
 
-   & .registrationForm {
+   & .parameterForm {
       margin-top: 50px;
       height: calc(100vh - 200px);
       overflow-y: auto;

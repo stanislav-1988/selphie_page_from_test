@@ -86,7 +86,7 @@ export const GetPhoto: FC = observer(() => {
     let finalHeight = player.videoHeight > minHeight ? player.videoHeight : minHeight;
     finalHeight = finalHeight > maxHeight ? maxHeight : finalHeight;
     canvas?.setAttribute('width', String(finalWidth));
-    canvas?.setAttribute('height', String(finalWidth));
+    canvas?.setAttribute('height', String(finalHeight));
     const context = canvas?.getContext('2d');
     if (context) {
       context?.drawImage(

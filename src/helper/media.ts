@@ -100,8 +100,8 @@ export const setupCameraStream = (
         idealHeight = Math.min(capabilities.height.max, maxHeight);
       }
 
-      const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-      if (isPortrait) [idealWidth, idealHeight] = [idealHeight, idealWidth];
+      // const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+      // if (!isPortrait) [idealWidth, idealHeight] = [idealHeight, idealWidth];
 
       // Stop initial stream before getting high-res one
       track.stop();

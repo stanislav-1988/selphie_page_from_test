@@ -23,6 +23,7 @@ export const GetPhoto: FC = observer(() => {
   } = myStore;
 
   useEffect(() => {
+    console.debug('start');
     setTimeout(() => { setTextHeaderButton('Сменить параметры'); }, 0);
 
     return () => {
@@ -80,16 +81,20 @@ export const GetPhoto: FC = observer(() => {
     const player = videoRef.current;
     if (!player) return;
     const canvas = document.createElement('canvas');
-    canvas?.setAttribute('width', String(player.videoWidth || minWidth));
-    canvas?.setAttribute('height', String(player.videoHeight || minHeight));
+    let finalWidth = player.videoWidth > minWidth ? player.videoWidth : minWidth;
+    finalWidth = finalWidth > maxWidth ? maxWidth : finalWidth;
+    let finalHeight = player.videoHeight > minHeight ? player.videoHeight : minHeight;
+    finalHeight = finalHeight > maxHeight ? maxHeight : finalHeight;
+    canvas?.setAttribute('width', String(finalWidth));
+    canvas?.setAttribute('height', String(finalWidth));
     const context = canvas?.getContext('2d');
     if (context) {
       context?.drawImage(
         player as HTMLVideoElement,
         0,
         0,
-        player.videoWidth || minWidth,
-        player.videoHeight || minHeight,
+        finalWidth,
+        finalHeight,
       );
       canvas.toBlob(() => {
         setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);

@@ -11,7 +11,7 @@ import styles from './formFields.module.scss';
 
 export const FormFields: FC = observer(() => {
   const {
-    maxWidth, maxHeight, format, framesCount, minHeight, minWidth, setFormat, setFramesCount, setMinHeight, setMinWidth, setMaxHeight, setMaxWidth, clearStor,
+    maxWidth, maxHeight, format, framesCount, widthMask, minWidth, setFormat, setFramesCount, setWidthMask, setMinWidth, setMaxHeight, setMaxWidth, clearStor,
   } = myStore;
   const navigate = useNavigate();
 
@@ -29,13 +29,11 @@ export const FormFields: FC = observer(() => {
   };
 
   const handleMaxHeight = (e: ChangeEvent<HTMLInputElement>) => {
-    console.debug(Number(e.target.value));
     setMaxHeight(Number(e.target.value));
   };
 
-  const handleMinHeight = (e: ChangeEvent<HTMLInputElement>) => {
-    console.debug(Number(e.target.value));
-    setMinHeight(Number(e.target.value));
+  const handleWidthMask = (e: ChangeEvent<HTMLInputElement>) => {
+    setWidthMask(Number(e.target.value));
   };
 
   const handleMinWidthChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +42,7 @@ export const FormFields: FC = observer(() => {
 
   const handleClickButton = () => {
     const savedParameters = {
-      maxWidth, maxHeight, minHeight, minWidth, format, framesCount,
+      maxWidth, maxHeight, widthMask, minWidth, format, framesCount,
     };
     localStorage.setItem('TEST_DATA', JSON.stringify(savedParameters));
     navigate(ROUTES.GET_PHOTO);
@@ -82,12 +80,12 @@ export const FormFields: FC = observer(() => {
             value={`${minWidth}`}
             onChange={handleMinWidthChange}
           />
-          <InputLabel text="Минимальная высота" />
+          <InputLabel text="Ширина маски" />
           <InputReusable
-            id="minHeight"
+            id="widthMask"
             type="number"
-            value={`${minHeight}`}
-            onChange={handleMinHeight}
+            value={`${widthMask}`}
+            onChange={handleWidthMask}
           />
           <InputLabel text="Колличество кадров в секунду" />
           <InputReusable

@@ -8,6 +8,7 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 
 import { LoaderComponent } from '../../components';
+import { AnimationProcess } from '../../components/AnimationProcess';
 import { cleanStream, getUserMedia, setupCameraStream } from '../../helper/media';
 import useMobileDetect from '../../hooks/useBreakpointState';
 import { ROUTES } from '../../providers';
@@ -19,7 +20,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, maxHeight, minWidth, minHeight, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, maxHeight, minWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -83,10 +84,8 @@ export const GetPhoto: FC = observer(() => {
     const canvas = document.createElement('canvas');
     let finalWidth = player.videoWidth > minWidth ? player.videoWidth : minWidth;
     finalWidth = finalWidth > maxWidth ? maxWidth : finalWidth;
-    let finalHeight = player.videoHeight > minHeight ? player.videoHeight : minHeight;
-    finalHeight = finalHeight > maxHeight ? maxHeight : finalHeight;
     canvas?.setAttribute('width', String(finalWidth));
-    canvas?.setAttribute('height', String(finalHeight));
+    canvas?.setAttribute('height', String(player.videoHeight));
     const context = canvas?.getContext('2d');
     if (context) {
       context?.drawImage(
@@ -94,7 +93,7 @@ export const GetPhoto: FC = observer(() => {
         0,
         0,
         finalWidth,
-        finalHeight,
+        player.videoHeight,
       );
       canvas.toBlob(() => {
         setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);
@@ -176,7 +175,7 @@ export const GetPhoto: FC = observer(() => {
             visibility: isVideoLoaded ? 'visible' : 'hidden',
           }}
         />
-        {!isVideoLoaded && <LoaderComponent />}
+        {!isVideoLoaded ? <LoaderComponent /> : <AnimationProcess />}
       </div>
       )}
       <div className={classNames(styles.content, (!renderCollection && isMobile() && styles.contentMobile))}>

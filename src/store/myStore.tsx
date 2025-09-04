@@ -13,7 +13,7 @@ class MyStore {
 
   framesCount: number = 15;
 
-  minHeight: number = 800;
+  widthMask: number = 50;
 
   videoRef!: React.MutableRefObject<HTMLVideoElement | null>;
 
@@ -31,7 +31,7 @@ class MyStore {
     this.format = 'image/png';
     this.maxHeight = 1220;
     this.maxWidth = 900;
-    this.minHeight = 800;
+    this.widthMask = 50;
     this.minWidth = 600;
     this.framesCount = 15;
   };
@@ -52,8 +52,8 @@ class MyStore {
     this.minWidth = width;
   };
 
-  setMinHeight = (height: number) => {
-    this.minHeight = height;
+  setWidthMask = (widthMask: number) => {
+    this.widthMask = widthMask;
   };
 
   setFramesCount = (framesCount: number) => {

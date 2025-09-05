@@ -83,34 +83,15 @@ export const GetPhoto: FC = observer(() => {
     const player = videoRef.current;
     if (!player) return;
     const canvas = document.createElement('canvas');
-    canvas?.setAttribute('width', String(player.videoWidth));
-    canvas?.setAttribute('height', String(player.videoHeight));
+    canvas.height = player.videoHeight;
+    canvas.width = player.videoWidth;
     const context = canvas?.getContext('2d');
-    const visiblePartThePhoto = document.getElementById('videoContainer');
-    const sizeThePhoto = document.getElementById('video');
-    console.debug('visiblePartThePhoto', visiblePartThePhoto, visiblePartThePhoto?.clientWidth, visiblePartThePhoto?.clientHeight);
-    console.debug('sizeThePhoto', sizeThePhoto, sizeThePhoto?.clientWidth, sizeThePhoto?.clientHeight);
-    let sx: number = 0;
-    if (sizeThePhoto?.clientWidth && visiblePartThePhoto?.clientWidth && sizeThePhoto?.clientWidth > visiblePartThePhoto?.clientWidth) {
-      const sxResult = visiblePartThePhoto?.clientHeight * 0.25;
-      if (!isNaN(sxResult)) sx = sxResult;
-    }
-    console.debug(sizeThePhoto?.clientWidth, sx, visiblePartThePhoto?.offsetWidth);
-    if (context && visiblePartThePhoto) {
-      context?.drawImage(
-        player as HTMLVideoElement,
-        sx,
-        0,
-        visiblePartThePhoto.offsetWidth,
-        visiblePartThePhoto.clientHeight,
-        0,
-        0,
-        visiblePartThePhoto.offsetWidth * 1.15,
-        visiblePartThePhoto.clientHeight * 1.15,
-      );
+    if (context) {
+      context.setTransform(1.3, 0, 0, 1.3, context.canvas.width * 0.5, context.canvas.height * 0.5);
+      context.drawImage(player as HTMLVideoElement, player.videoWidth * -0.5, player.videoHeight * -0.5);
       canvas.toBlob(() => {
-        setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);
-      }, 'image/png', 1.0);
+        setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 0.1)]);
+      }, 'image/png', 0.1);
     }
   };
 

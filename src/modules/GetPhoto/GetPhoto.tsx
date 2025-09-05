@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-array-index-key */
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
@@ -20,7 +22,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, maxHeight, minWidth, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -48,7 +50,6 @@ export const GetPhoto: FC = observer(() => {
   const setupCameraStreamResult = useCallback(() => setupCameraStream(
     videoRef,
     maxWidth,
-    maxHeight,
     () => [],
     () => [],
     () => [],
@@ -63,7 +64,7 @@ export const GetPhoto: FC = observer(() => {
         console.debug('result.state', result.state);
       });
       console.error('Camera initialization failed:', error);
-    }), [maxWidth, maxHeight, setIsVideoLoaded]);
+    }), [maxWidth, setIsVideoLoaded]);
 
   useEffect(() => {
     if (!isVideoLoaded && isCameraRetry) {
@@ -82,18 +83,30 @@ export const GetPhoto: FC = observer(() => {
     const player = videoRef.current;
     if (!player) return;
     const canvas = document.createElement('canvas');
-    let finalWidth = player.videoWidth > minWidth ? player.videoWidth : minWidth;
-    finalWidth = finalWidth > maxWidth ? maxWidth : finalWidth;
-    canvas?.setAttribute('width', String(finalWidth));
+    canvas?.setAttribute('width', String(player.videoWidth));
     canvas?.setAttribute('height', String(player.videoHeight));
     const context = canvas?.getContext('2d');
-    if (context) {
+    const visiblePartThePhoto = document.getElementById('videoContainer');
+    const sizeThePhoto = document.getElementById('video');
+    console.debug('visiblePartThePhoto', visiblePartThePhoto, visiblePartThePhoto?.clientWidth, visiblePartThePhoto?.clientHeight);
+    console.debug('sizeThePhoto', sizeThePhoto, sizeThePhoto?.clientWidth, sizeThePhoto?.clientHeight);
+    let sx: number = 0;
+    if (sizeThePhoto?.clientWidth && visiblePartThePhoto?.clientWidth && sizeThePhoto?.clientWidth > visiblePartThePhoto?.clientWidth) {
+      const sxResult = visiblePartThePhoto?.clientHeight * 0.25;
+      if (!isNaN(sxResult)) sx = sxResult;
+    }
+    console.debug(sizeThePhoto?.clientWidth, sx, visiblePartThePhoto?.offsetWidth);
+    if (context && visiblePartThePhoto) {
       context?.drawImage(
         player as HTMLVideoElement,
+        sx,
+        0,
+        visiblePartThePhoto.offsetWidth,
+        visiblePartThePhoto.clientHeight,
         0,
         0,
-        finalWidth,
-        player.videoHeight,
+        visiblePartThePhoto.offsetWidth,
+        visiblePartThePhoto.clientHeight,
       );
       canvas.toBlob(() => {
         setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);
@@ -162,6 +175,7 @@ export const GetPhoto: FC = observer(() => {
       >
 
         <video
+          id="video"
           autoPlay
           muted
           playsInline
@@ -186,6 +200,9 @@ export const GetPhoto: FC = observer(() => {
           {renderCollection && frameCollection.map((el, i) => (
             <div key={`Photo-${i}`} className={styles.cardResult}>
               <img
+                style={{
+                  transform: 'rotateY(180deg)',
+                }}
                 onClick={() => downloadFile(el, i)}
                 id={`Photo-${i}`}
                 alt="Verification in progress"

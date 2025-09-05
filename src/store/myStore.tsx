@@ -5,11 +5,7 @@ class MyStore {
 
   maxWidth: number = 900;
 
-  maxHeight: number = 1220;
-
   textHeaderButton: string = '';
-
-  minWidth: number = 600;
 
   framesCount: number = 15;
 
@@ -29,10 +25,8 @@ class MyStore {
 
   clearStor = () => {
     this.format = 'image/png';
-    this.maxHeight = 1220;
     this.maxWidth = 900;
     this.widthMask = 50;
-    this.minWidth = 600;
     this.framesCount = 15;
   };
 
@@ -42,14 +36,6 @@ class MyStore {
 
   setMaxWidth = (width: number) => {
     this.maxWidth = width;
-  };
-
-  setMaxHeight = (height: number) => {
-    this.maxHeight = height;
-  };
-
-  setMinWidth = (width: number) => {
-    this.minWidth = width;
   };
 
   setWidthMask = (widthMask: number) => {

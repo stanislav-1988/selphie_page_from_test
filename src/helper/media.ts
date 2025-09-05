@@ -37,7 +37,6 @@ export const getUserMedia = async (constraints: MediaStreamConstraints): Promise
 export const setupCameraStream = (
   videoRef: React.RefObject<HTMLVideoElement>,
   maxWidth: number,
-  maxHeight: number,
   setIsErrorPageOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorPageDetails: React.Dispatch<React.SetStateAction<string>>,
   setCameraState: React.Dispatch<React.SetStateAction<CameraState | undefined>>,
@@ -84,7 +83,6 @@ export const setupCameraStream = (
       video: {
         deviceId,
         width: { ideal: maxWidth },
-        height: { ideal: maxHeight },
       },
     }))
     .then((initialStream) => {
@@ -92,16 +90,9 @@ export const setupCameraStream = (
       const track = initialStream.getVideoTracks()[0];
       const capabilities = track.getCapabilities();
       let idealWidth = maxWidth;
-      let idealHeight = maxHeight;
       if (capabilities.width?.max) {
         idealWidth = Math.min(capabilities.width.max, maxWidth);
       }
-      if (capabilities.height?.max) {
-        idealHeight = Math.min(capabilities.height.max, maxHeight);
-      }
-
-      // const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-      // if (!isPortrait) [idealWidth, idealHeight] = [idealHeight, idealWidth];
 
       // Stop initial stream before getting high-res one
       track.stop();
@@ -110,7 +101,6 @@ export const setupCameraStream = (
         video: {
           deviceId: track.getSettings().deviceId!,
           width: { ideal: idealWidth, max: maxWidth },
-          height: { ideal: idealHeight, max: maxHeight },
         },
       });
     })

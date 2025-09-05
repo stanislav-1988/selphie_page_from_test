@@ -105,8 +105,8 @@ export const GetPhoto: FC = observer(() => {
         visiblePartThePhoto.clientHeight,
         0,
         0,
-        visiblePartThePhoto.offsetWidth,
-        visiblePartThePhoto.clientHeight,
+        visiblePartThePhoto.offsetWidth + 50,
+        visiblePartThePhoto.clientHeight + 50,
       );
       canvas.toBlob(() => {
         setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1.0)]);

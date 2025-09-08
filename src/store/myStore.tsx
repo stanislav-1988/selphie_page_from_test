@@ -3,7 +3,9 @@ import { makeAutoObservable } from 'mobx';
 class MyStore {
   format: string = 'image/png';
 
-  maxWidth: number = 900;
+  maxWidth: number = 1900;
+
+  minWidth: number = 1280;
 
   textHeaderButton: string = '';
 
@@ -25,7 +27,8 @@ class MyStore {
 
   clearStor = () => {
     this.format = 'image/png';
-    this.maxWidth = 900;
+    this.maxWidth = 1900;
+    this.minWidth = 1280;
     this.widthMask = 50;
     this.framesCount = 15;
   };
@@ -36,6 +39,10 @@ class MyStore {
 
   setMaxWidth = (width: number) => {
     this.maxWidth = width;
+  };
+
+  setMinWidth = (width: number) => {
+    this.minWidth = width;
   };
 
   setWidthMask = (widthMask: number) => {

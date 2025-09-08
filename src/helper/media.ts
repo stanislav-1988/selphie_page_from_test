@@ -116,6 +116,7 @@ export const setupCameraStream = (
           videoRef.current.onloadedmetadata = () => {
             const width = videoRef.current?.videoWidth;
             const height = videoRef.current?.videoHeight;
+
             setCameraState({
               width,
               height,

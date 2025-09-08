@@ -11,7 +11,7 @@ import styles from './formFields.module.scss';
 
 export const FormFields: FC = observer(() => {
   const {
-    maxWidth, format, framesCount, widthMask, setFormat, setFramesCount, setWidthMask, setMaxWidth, clearStor,
+    maxWidth, format, framesCount, minWidth, widthMask, setFormat, setMinWidth, setFramesCount, setWidthMask, setMaxWidth, clearStor,
   } = myStore;
   const navigate = useNavigate();
 
@@ -24,6 +24,10 @@ export const FormFields: FC = observer(() => {
     setMaxWidth(Number(e.target.value));
   };
 
+  const handleMinWidthChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMinWidth(Number(e.target.value));
+  };
+
   const handleFramesCount = (e: ChangeEvent<HTMLInputElement>) => {
     setFramesCount(Number(e.target.value));
   };
@@ -34,7 +38,7 @@ export const FormFields: FC = observer(() => {
 
   const handleClickButton = () => {
     const savedParameters = {
-      maxWidth, widthMask, format, framesCount,
+      maxWidth, minWidth, widthMask, format, framesCount,
     };
     localStorage.setItem('TEST_DATA', JSON.stringify(savedParameters));
     navigate(ROUTES.GET_PHOTO);
@@ -57,6 +61,13 @@ export const FormFields: FC = observer(() => {
             type="number"
             value={`${maxWidth}`}
             onChange={handleMaxWidthChange}
+          />
+          <InputLabel text="Минимальная ширина" />
+          <InputReusable
+            id="minWidth"
+            type="number"
+            value={`${minWidth}`}
+            onChange={handleMinWidthChange}
           />
           <InputLabel text="Ширина маски" />
           <InputReusable

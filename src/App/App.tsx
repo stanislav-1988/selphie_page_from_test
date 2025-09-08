@@ -9,13 +9,14 @@ import styles from './App.module.scss';
 
 export const App: FC = () => {
   const {
-    setFormat, setMaxWidth, setFramesCount, setWidthMask,
+    setFormat, setMaxWidth, setFramesCount, setWidthMask, setMinWidth,
   } = myStore;
 
   useEffect(() => {
     const localStorageData = localStorage.getItem('TEST_DATA');
     if (localStorageData) {
       const data = JSON.parse(localStorageData);
+      if (data.minWidth) setMinWidth(data.minWidth);
       if (data.maxWidth) setMaxWidth(data.maxWidth);
       if (data.widthMask) setWidthMask(data.widthMask);
       if (data.format) setFormat(data.format);

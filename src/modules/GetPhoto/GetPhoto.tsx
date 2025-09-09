@@ -85,23 +85,23 @@ export const GetPhoto: FC = observer(() => {
     if (!player) return;
     const canvas = document.createElement('canvas');
 
-    // const widthRequiredPercentages = player.videoWidth;
-    // const heightRequiredPercentages = player.videoHeight;
-    // if (player.videoWidth < minWidth) {
-    //   const currentWidthOnePrecented = player.videoWidth / 100;
-    //   const currentHeightOnePrecented = player.videoHeight / 100;
-    //   console.debug(player.videoWidth);
-    //   const resultPrecented = maxWidth / currentWidthOnePrecented;
+    let widthRequiredPercentages = player.videoWidth;
+    let heightRequiredPercentages = player.videoHeight;
+    if (player.videoWidth < 800) {
+      const currentWidthOnePrecented = player.videoWidth / 100;
+      const currentHeightOnePrecented = player.videoHeight / 100;
+      console.debug(player.videoWidth);
+      const resultPrecented = maxWidth / currentWidthOnePrecented;
 
-    //   widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
-    //   heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
-    // }
-    canvas.height = player.videoHeight;
-    canvas.width = player.videoWidth;
+      widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
+      heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
+    }
+    canvas.height = heightRequiredPercentages;
+    canvas.width = widthRequiredPercentages;
     const context = canvas?.getContext('2d');
     if (context) {
-      context.setTransform(1.2, 0, 0, 1.2, -100, 0);
-      context.fillRect(0, 0, 100, 100);
+      // context.setTransform(1.2, 0, 0, 1.2, -100, 0);
+      // context.fillRect(0, 0, 100, 100);
       context.drawImage(player as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(() => {

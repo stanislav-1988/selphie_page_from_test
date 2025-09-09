@@ -22,7 +22,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, minWidth, format, isCameraRetry, maxWidth, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export const GetPhoto: FC = observer(() => {
     return () => {
       setTextHeaderButton('');
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { isMobile } = useMobileDetect();
@@ -84,23 +85,25 @@ export const GetPhoto: FC = observer(() => {
     if (!player) return;
     const canvas = document.createElement('canvas');
 
-    let widthRequiredPercentages = player.videoWidth;
-    let heightRequiredPercentages = player.videoHeight;
-    if (player.videoWidth < minWidth) {
-      const currentWidthOnePrecented = player.videoWidth / 100;
-      const currentHeightOnePrecented = player.videoHeight / 100;
-      const resultPrecented = maxWidth / currentWidthOnePrecented;
+    // const widthRequiredPercentages = player.videoWidth;
+    // const heightRequiredPercentages = player.videoHeight;
+    // if (player.videoWidth < minWidth) {
+    //   const currentWidthOnePrecented = player.videoWidth / 100;
+    //   const currentHeightOnePrecented = player.videoHeight / 100;
+    //   console.debug(player.videoWidth);
+    //   const resultPrecented = maxWidth / currentWidthOnePrecented;
 
-      widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
-      heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
-    }
-    console.debug(widthRequiredPercentages, heightRequiredPercentages);
-    canvas.height = heightRequiredPercentages;
-    canvas.width = widthRequiredPercentages;
+    //   widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
+    //   heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
+    // }
+    canvas.height = player.videoHeight;
+    canvas.width = player.videoWidth;
     const context = canvas?.getContext('2d');
     if (context) {
-      // context.setTransform(1.3, 0, 0, 1.3, context.canvas.width * 0.5, context.canvas.height * 0.5);
+      context.setTransform(1.2, 0, 0, 1.2, -100, 0);
+      context.fillRect(0, 0, 100, 100);
       context.drawImage(player as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
+
       canvas.toBlob(() => {
         setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 0.1)]);
       }, 'image/png', 0.1);

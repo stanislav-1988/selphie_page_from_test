@@ -105,8 +105,8 @@ export const GetPhoto: FC = observer(() => {
       context.drawImage(player as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(() => {
-        setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 0.1)]);
-      }, 'image/png', 0.1);
+        setFrameCollection((prev) => [...prev, canvas.toDataURL(format, 1)]);
+      }, format, 1);
     }
   };
 

@@ -87,10 +87,10 @@ export const GetPhoto: FC = observer(() => {
 
     let widthRequiredPercentages = player.videoWidth;
     let heightRequiredPercentages = player.videoHeight;
+    console.debug(`${widthRequiredPercentages} x ${heightRequiredPercentages}`);
     if (player.videoWidth < 800) {
       const currentWidthOnePrecented = player.videoWidth / 100;
       const currentHeightOnePrecented = player.videoHeight / 100;
-      console.debug(player.videoWidth);
       const resultPrecented = maxWidth / currentWidthOnePrecented;
 
       widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;

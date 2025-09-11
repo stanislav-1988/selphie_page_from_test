@@ -90,18 +90,18 @@ export const GetPhoto: FC = observer(() => {
     if (!player) return;
     const canvas = document.createElement('canvas');
 
-    // let widthRequiredPercentages = ;
-    // let heightRequiredPercentages = player.videoHeight;
-    // if (player.videoWidth < 800) {
-    //   const currentWidthOnePrecented = player.videoWidth / 100;
-    //   const currentHeightOnePrecented = player.videoHeight / 100;
-    //   const resultPrecented = maxWidth / currentWidthOnePrecented;
+    let widthRequiredPercentages = player.videoWidth;
+    let heightRequiredPercentages = player.videoHeight;
+    if (player.videoWidth < maxWidth) {
+      const currentWidthOnePrecented = player.videoWidth / 100;
+      const currentHeightOnePrecented = player.videoHeight / 100;
+      const resultPrecented = maxWidth / currentWidthOnePrecented;
 
-    //   widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
-    //   heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
-    // }
-    canvas.height = player.videoHeight;
-    canvas.width = player.videoWidth;
+      widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
+      heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
+    }
+    canvas.height = heightRequiredPercentages;
+    canvas.width = widthRequiredPercentages;
     const context = canvas?.getContext('2d');
     if (context) {
       context.setTransform(1.2, 0, 0, 1.2, -100, 0);

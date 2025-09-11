@@ -70,7 +70,12 @@ export const GetPhoto: FC = observer(() => {
   useEffect(() => {
     if (!isVideoLoaded && isCameraRetry) {
       setIsCameraRetry(false);
-      getUserMedia({ video: true })
+      // getUserMedia({ video: true })
+      getUserMedia({
+        video: {
+          width: { ideal: maxWidth },
+        },
+      })
         .then(() => {
           setupCameraStreamResult();
         })
@@ -78,29 +83,29 @@ export const GetPhoto: FC = observer(() => {
           setupCameraStreamResult();
         });
     }
-  }, [isCameraRetry, isVideoLoaded, setIsCameraRetry, setupCameraStreamResult]);
+  }, [isCameraRetry, isVideoLoaded, maxWidth, setIsCameraRetry, setupCameraStreamResult]);
 
   const captureSelfie = () => {
     const player = videoRef.current;
     if (!player) return;
     const canvas = document.createElement('canvas');
 
-    let widthRequiredPercentages = player.videoWidth;
-    let heightRequiredPercentages = player.videoHeight;
-    if (player.videoWidth < 800) {
-      const currentWidthOnePrecented = player.videoWidth / 100;
-      const currentHeightOnePrecented = player.videoHeight / 100;
-      const resultPrecented = maxWidth / currentWidthOnePrecented;
+    // let widthRequiredPercentages = ;
+    // let heightRequiredPercentages = player.videoHeight;
+    // if (player.videoWidth < 800) {
+    //   const currentWidthOnePrecented = player.videoWidth / 100;
+    //   const currentHeightOnePrecented = player.videoHeight / 100;
+    //   const resultPrecented = maxWidth / currentWidthOnePrecented;
 
-      widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
-      heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
-    }
-    canvas.height = heightRequiredPercentages;
-    canvas.width = widthRequiredPercentages;
+    //   widthRequiredPercentages = currentWidthOnePrecented * resultPrecented;
+    //   heightRequiredPercentages = currentHeightOnePrecented * resultPrecented;
+    // }
+    canvas.height = player.videoHeight;
+    canvas.width = player.videoWidth;
     const context = canvas?.getContext('2d');
     if (context) {
-      // context.setTransform(1.2, 0, 0, 1.2, -100, 0);
-      // context.fillRect(0, 0, 100, 100);
+      context.setTransform(1.2, 0, 0, 1.2, -100, 0);
+      context.fillRect(0, 0, 100, 100);
       context.drawImage(player as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(() => {

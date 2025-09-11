@@ -82,7 +82,7 @@ export const setupCameraStream = (
     .then((deviceId) => navigator.mediaDevices.getUserMedia({
       video: {
         deviceId,
-        width: { ideal: maxWidth },
+        // width: { ideal: maxWidth },
       },
     }))
     .then((initialStream) => {

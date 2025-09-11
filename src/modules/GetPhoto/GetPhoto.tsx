@@ -104,8 +104,8 @@ export const GetPhoto: FC = observer(() => {
     canvas.width = widthRequiredPercentages;
     const context = canvas?.getContext('2d');
     if (context) {
-      context.setTransform(1.2, 0, 0, 1.2, -100, 0);
-      context.fillRect(0, 0, 100, 100);
+      // context.setTransform(1.2, 0, 0, 1.2, -100, 0);
+      // context.fillRect(0, 0, 100, 100);
       context.drawImage(player as HTMLVideoElement, 0, 0, canvas.width, canvas.height);
 
       canvas.toBlob(() => {

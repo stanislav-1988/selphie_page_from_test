@@ -37,7 +37,7 @@ export const getUserMedia = async (constraints: MediaStreamConstraints): Promise
 export const setupCameraStream = (
   videoRef: React.RefObject<HTMLVideoElement>,
   maxWidth: number,
-  numberCamera: number,
+  numberCamera: number | undefined,
   setIsErrorPageOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorPageDetails: React.Dispatch<React.SetStateAction<string>>,
   setCameraState: React.Dispatch<React.SetStateAction<CameraState | undefined>>,
@@ -77,8 +77,9 @@ export const setupCameraStream = (
         console.debug('NO DEVICES FOUND ', videoDevices);
         throw new Error('No devices found for video devices');
       }
+      if (numberCamera) return videoDevices[numberCamera].deviceId;
 
-      return videoDevices[numberCamera].deviceId;
+      return videoDevices[0].deviceId;
     })
     .then((deviceId) => navigator.mediaDevices.getUserMedia({
       video: {

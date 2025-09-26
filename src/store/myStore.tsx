@@ -5,7 +5,7 @@ class MyStore {
 
   maxWidth: number = 900;
 
-  numberCamera: number = 0;
+  numberCamera: number | undefined;
 
   textHeaderButton: string = '';
 

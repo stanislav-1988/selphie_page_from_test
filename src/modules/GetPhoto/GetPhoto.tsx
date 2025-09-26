@@ -73,10 +73,16 @@ export const GetPhoto: FC = observer(() => {
     if (!isVideoLoaded && isCameraRetry) {
       setIsCameraRetry(false);
       // getUserMedia({ video: true })
-      getUserMedia({
-        video: {
-          width: { ideal: maxWidth },
+      const video = numberCamera === undefined ? {
+        width: { ideal: maxWidth },
+        facingMode: {
+          exact: 'environment',
         },
+      } : {
+        width: { ideal: maxWidth },
+      };
+      getUserMedia({
+        video,
       })
         .then(() => {
           setupCameraStreamResult();
@@ -85,7 +91,7 @@ export const GetPhoto: FC = observer(() => {
           setupCameraStreamResult();
         });
     }
-  }, [isCameraRetry, isVideoLoaded, maxWidth, setIsCameraRetry, setupCameraStreamResult]);
+  }, [isCameraRetry, isVideoLoaded, maxWidth, numberCamera, setIsCameraRetry, setupCameraStreamResult]);
 
   const captureSelfie = () => {
     const player = videoRef.current;
@@ -149,6 +155,13 @@ export const GetPhoto: FC = observer(() => {
   };
 
   const handleButtClick = () => {
+    if (numberCamera === undefined) {
+      setNumberCamera(1);
+      setIsVideoLoaded(false);
+      setIsCameraRetry(true);
+
+      return;
+    }
     setNumberCamera(numberCamera + 1);
     if (numberCamera > 5) {
       setNumberCamera(0);

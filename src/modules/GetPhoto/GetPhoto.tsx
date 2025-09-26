@@ -22,7 +22,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, setNumberCamera, framesCount, videoDevicesList, numberCamera, format, isCameraRetry, maxWidth, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -47,12 +47,10 @@ export const GetPhoto: FC = observer(() => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.debug(numberCamera);
 
   const setupCameraStreamResult = useCallback(() => setupCameraStream(
     videoRef,
     maxWidth,
-    numberCamera,
     () => [],
     () => [],
     () => [],
@@ -67,22 +65,16 @@ export const GetPhoto: FC = observer(() => {
         console.debug('result.state', result.state);
       });
       console.error('Camera initialization failed:', error);
-    }), [maxWidth, setIsVideoLoaded, numberCamera]);
+    }), [maxWidth, setIsVideoLoaded]);
 
   useEffect(() => {
     if (!isVideoLoaded && isCameraRetry) {
       setIsCameraRetry(false);
       // getUserMedia({ video: true })
-      const video = numberCamera === undefined ? {
-        width: { ideal: maxWidth },
-        facingMode: {
-          exact: 'environment',
-        },
-      } : {
-        width: { ideal: maxWidth },
-      };
       getUserMedia({
-        video,
+        video: {
+          width: { ideal: maxWidth },
+        },
       })
         .then(() => {
           setupCameraStreamResult();
@@ -91,7 +83,7 @@ export const GetPhoto: FC = observer(() => {
           setupCameraStreamResult();
         });
     }
-  }, [isCameraRetry, isVideoLoaded, maxWidth, numberCamera, setIsCameraRetry, setupCameraStreamResult]);
+  }, [isCameraRetry, isVideoLoaded, maxWidth, setIsCameraRetry, setupCameraStreamResult]);
 
   const captureSelfie = () => {
     const player = videoRef.current;
@@ -154,17 +146,6 @@ export const GetPhoto: FC = observer(() => {
     window.location.reload();
   };
 
-  const handleButtClick = (id: number) => {
-    if (id !== numberCamera) {
-      cleanStream(videoRef);
-      setNumberCamera(id);
-      setIsVideoLoaded(false);
-      setIsCameraRetry(true);
-    }
-    // setOpenCameraList(false);
-    console.debug(numberCamera);
-  };
-
   return (
 
     <div className={styles.container}>
@@ -200,7 +181,7 @@ export const GetPhoto: FC = observer(() => {
           playsInline
           ref={videoRef}
           style={{
-            height: '100%',
+            width: '100%',
             position: 'absolute',
             top: '50%',
             left: '50%',
@@ -214,8 +195,6 @@ export const GetPhoto: FC = observer(() => {
       <div className={classNames(styles.content, (!renderCollection && isMobile() && styles.contentMobile))}>
         <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
         <button className={styles.button} type="button" onClick={handleButtonClick}>Сменить параметры</button>
-        {videoDevicesList?.map((el, id) => <button key={id} className={styles.button} type="button" onClick={() => handleButtClick(id)}>{el.nameDevice}</button>)}
-
         {renderCollection && <span className={styles.span}>Вы можете загрузить отдельное фото кликнув по необходимому, можете скачать все</span>}
         <div className={styles.cardResultContainer}>
           {renderCollection && frameCollection.map((el, i) => (

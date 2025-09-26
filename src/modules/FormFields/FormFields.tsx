@@ -24,10 +24,6 @@ export const FormFields: FC = observer(() => {
     setMaxWidth(Number(e.target.value));
   };
 
-  // const handleMinWidthChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setMinWidth(Number(e.target.value));
-  // };
-
   const handleFramesCount = (e: ChangeEvent<HTMLInputElement>) => {
     setFramesCount(Number(e.target.value));
   };
@@ -62,13 +58,6 @@ export const FormFields: FC = observer(() => {
             value={`${maxWidth}`}
             onChange={handleMaxWidthChange}
           />
-          {/* <InputLabel text="Минимальная ширина" />
-          <InputReusable
-            id="minWidth"
-            type="number"
-            value={`${minWidth}`}
-            onChange={handleMinWidthChange}
-          /> */}
           <InputLabel text="Ширина маски" />
           <InputReusable
             id="widthMask"

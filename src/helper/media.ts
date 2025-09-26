@@ -4,8 +4,6 @@
 import type React from 'react';
 import { type MutableRefObject } from 'react';
 
-import myStore, { IVideoDevicesList } from '../store/myStore';
-
 export interface CameraState {
   width?: number;
   height?: number;
@@ -39,13 +37,11 @@ export const getUserMedia = async (constraints: MediaStreamConstraints): Promise
 export const setupCameraStream = (
   videoRef: React.RefObject<HTMLVideoElement>,
   maxWidth: number,
-  numberCamera: number | undefined,
   setIsErrorPageOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorPageDetails: React.Dispatch<React.SetStateAction<string>>,
   setCameraState: React.Dispatch<React.SetStateAction<CameraState | undefined>>,
   setIsShowingInstruction: React.Dispatch<React.SetStateAction<boolean>>,
 ): Promise<void> => {
-  const { videoDevicesList, setVideoDevicesList } = myStore;
   const checkPermissions = (): Promise<boolean> | undefined => navigator.permissions
     ?.query({ name: 'camera' as any })
     .then((permissionStatus) => {
@@ -74,48 +70,21 @@ export const setupCameraStream = (
     })
     .then(() => navigator.mediaDevices.enumerateDevices())
     .then((devices) => {
-      if (!videoDevicesList) {
-        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
-        // console.log(videoDevices);
-        if (videoDevices.length <= 0) {
-          setIsErrorPageOpen(true);
-          console.debug('NO DEVICES FOUND ', videoDevices);
-          throw new Error('No devices found for video devices');
-        } else {
-          const newVideoDevicesList: Array<IVideoDevicesList> = videoDevices.map((el, index) => {
-            const infoDevice: IVideoDevicesList = {
-              id: el.deviceId,
-              nameDevice: el.label || `Камера ${index + 1}`,
-              uuid: '563452342566758746',
-            };
-
-            return infoDevice;
-          });
-
-          setVideoDevicesList(newVideoDevicesList);
-
-          return newVideoDevicesList[0].id;
-        }
+      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+      if (videoDevices.length <= 0) {
+        setIsErrorPageOpen(true);
+        console.debug('NO DEVICES FOUND ', videoDevices);
+        throw new Error('No devices found for video devices');
       }
 
-      return videoDevicesList[numberCamera!].id;
+      return videoDevices[0].deviceId;
     })
-    .then((deviceId) => {
-      const video = numberCamera === undefined ? {
+    .then((deviceId) => navigator.mediaDevices.getUserMedia({
+      video: {
         deviceId,
-        width: { ideal: maxWidth },
-        facingMode: {
-          exact: 'environment',
-        },
-      } : {
-        deviceId,
-        width: { ideal: maxWidth },
-      };
-
-      return navigator.mediaDevices.getUserMedia({
-        video,
-      });
-    })
+        // width: { ideal: maxWidth },
+      },
+    }))
     .then((initialStream) => {
       if (!initialStream || !videoRef.current) return;
       const track = initialStream.getVideoTracks()[0];
@@ -124,23 +93,15 @@ export const setupCameraStream = (
       if (capabilities.width?.max) {
         idealWidth = Math.min(capabilities.width.max, maxWidth);
       }
-      console.debug(track);
 
       // Stop initial stream before getting high-res one
       track.stop();
-      const video = numberCamera === undefined ? {
-        deviceId: track.getSettings().deviceId!,
-        width: { ideal: idealWidth, max: maxWidth },
-        facingMode: {
-          exact: 'environment',
-        },
-      } : {
-        deviceId: track.getSettings().deviceId!,
-        width: { ideal: idealWidth, max: maxWidth },
-      };
 
       return navigator.mediaDevices.getUserMedia({
-        video,
+        video: {
+          deviceId: track.getSettings().deviceId!,
+          width: { ideal: idealWidth, max: maxWidth },
+        },
       });
     })
     .then((finalStream) => {

@@ -1,17 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 
-export interface IVideoDevicesList {
-  id: string;
-  nameDevice: string;
-  uuid: string;
-}
-
 class MyStore {
   format: string = 'image/png';
 
   maxWidth: number = 900;
-
-  numberCamera: number | undefined;
 
   textHeaderButton: string = '';
 
@@ -25,8 +17,6 @@ class MyStore {
 
   isCameraRetry: boolean = true;
 
-  videoDevicesList: Array<IVideoDevicesList> | null = null;
-
   isAuthenticationLoading = false;
 
   constructor() {
@@ -36,7 +26,6 @@ class MyStore {
   clearStor = () => {
     this.format = 'image/png';
     this.maxWidth = 900;
-    // this.minWidth = 1280;
     this.widthMask = 50;
     this.framesCount = 15;
   };
@@ -47,10 +36,6 @@ class MyStore {
 
   setMaxWidth = (width: number) => {
     this.maxWidth = width;
-  };
-
-  setNumberCamera = (camera: number) => {
-    this.numberCamera = camera;
   };
 
   setWidthMask = (widthMask: number) => {
@@ -75,10 +60,6 @@ class MyStore {
 
   setIsCameraRetry = (payload: boolean) => {
     this.isCameraRetry = payload;
-  };
-
-  setVideoDevicesList = (payload: Array<IVideoDevicesList>) => {
-    this.videoDevicesList = payload;
   };
 
   setIsAuthenticationLoading = (payload: boolean) => {

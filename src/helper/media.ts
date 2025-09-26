@@ -88,7 +88,7 @@ export const setupCameraStream = (
     }))
     .then((initialStream) => {
       if (!initialStream || !videoRef.current) return;
-      const track = initialStream.getVideoTracks()[numberCamera];
+      const track = initialStream.getVideoTracks()[0];
       const capabilities = track.getCapabilities();
       let idealWidth = maxWidth;
       if (capabilities.width?.max) {

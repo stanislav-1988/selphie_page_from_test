@@ -4,6 +4,8 @@
 import type React from 'react';
 import { type MutableRefObject } from 'react';
 
+import myStore, { IVideoDevicesList } from '../store/myStore';
+
 export interface CameraState {
   width?: number;
   height?: number;
@@ -43,6 +45,7 @@ export const setupCameraStream = (
   setCameraState: React.Dispatch<React.SetStateAction<CameraState | undefined>>,
   setIsShowingInstruction: React.Dispatch<React.SetStateAction<boolean>>,
 ): Promise<void> => {
+  const { videoDevicesList, setVideoDevicesList } = myStore;
   const checkPermissions = (): Promise<boolean> | undefined => navigator.permissions
     ?.query({ name: 'camera' as any })
     .then((permissionStatus) => {
@@ -71,15 +74,31 @@ export const setupCameraStream = (
     })
     .then(() => navigator.mediaDevices.enumerateDevices())
     .then((devices) => {
-      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
-      if (videoDevices.length <= 0) {
-        setIsErrorPageOpen(true);
-        console.debug('NO DEVICES FOUND ', videoDevices);
-        throw new Error('No devices found for video devices');
-      }
-      if (numberCamera) return videoDevices[numberCamera].deviceId;
+      if (!videoDevicesList) {
+        const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+        // console.log(videoDevices);
+        if (videoDevices.length <= 0) {
+          setIsErrorPageOpen(true);
+          console.debug('NO DEVICES FOUND ', videoDevices);
+          throw new Error('No devices found for video devices');
+        } else {
+          const newVideoDevicesList: Array<IVideoDevicesList> = videoDevices.map((el, index) => {
+            const infoDevice: IVideoDevicesList = {
+              id: el.deviceId,
+              nameDevice: el.label || `Камера ${index + 1}`,
+              uuid: '563452342566758746',
+            };
 
-      return videoDevices[0].deviceId;
+            return infoDevice;
+          });
+
+          setVideoDevicesList(newVideoDevicesList);
+
+          return newVideoDevicesList[0].id;
+        }
+      }
+
+      return videoDevicesList[numberCamera!].id;
     })
     .then((deviceId) => {
       const video = numberCamera === undefined ? {

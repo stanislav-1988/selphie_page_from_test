@@ -22,7 +22,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, setNumberCamera, framesCount, numberCamera, format, isCameraRetry, maxWidth, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, setNumberCamera, framesCount, videoDevicesList, numberCamera, format, isCameraRetry, maxWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -154,20 +154,14 @@ export const GetPhoto: FC = observer(() => {
     window.location.reload();
   };
 
-  const handleButtClick = () => {
-    if (numberCamera === undefined) {
-      setNumberCamera(1);
+  const handleButtClick = (id: number) => {
+    if (id !== numberCamera) {
+      cleanStream(videoRef);
+      setNumberCamera(id);
       setIsVideoLoaded(false);
       setIsCameraRetry(true);
-
-      return;
     }
-    setNumberCamera(numberCamera + 1);
-    if (numberCamera > 5) {
-      setNumberCamera(0);
-    }
-    setIsVideoLoaded(false);
-    setIsCameraRetry(true);
+    // setOpenCameraList(false);
     console.debug(numberCamera);
   };
 
@@ -220,7 +214,8 @@ export const GetPhoto: FC = observer(() => {
       <div className={classNames(styles.content, (!renderCollection && isMobile() && styles.contentMobile))}>
         <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
         <button className={styles.button} type="button" onClick={handleButtonClick}>Сменить параметры</button>
-        <button className={styles.button} type="button" onClick={handleButtClick}>сменить камеру</button>
+        {videoDevicesList?.map((el, id) => <button key={id} className={styles.button} type="button" onClick={() => handleButtClick(id)}>{el.nameDevice}</button>)}
+
         {renderCollection && <span className={styles.span}>Вы можете загрузить отдельное фото кликнув по необходимому, можете скачать все</span>}
         <div className={styles.cardResultContainer}>
           {renderCollection && frameCollection.map((el, i) => (

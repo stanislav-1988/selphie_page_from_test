@@ -1,5 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 
+export interface IVideoDevicesList {
+  id: string;
+  nameDevice: string;
+  uuid: string;
+}
+
 class MyStore {
   format: string = 'image/png';
 
@@ -18,6 +24,8 @@ class MyStore {
   isVideoLoaded: boolean = false;
 
   isCameraRetry: boolean = true;
+
+  videoDevicesList: Array<IVideoDevicesList> | null = null;
 
   isAuthenticationLoading = false;
 
@@ -67,6 +75,10 @@ class MyStore {
 
   setIsCameraRetry = (payload: boolean) => {
     this.isCameraRetry = payload;
+  };
+
+  setVideoDevicesList = (payload: Array<IVideoDevicesList>) => {
+    this.videoDevicesList = payload;
   };
 
   setIsAuthenticationLoading = (payload: boolean) => {

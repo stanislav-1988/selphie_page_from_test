@@ -5,7 +5,7 @@ class MyStore {
 
   maxWidth: number = 900;
 
-  // minWidth: number = 1280;
+  numberCamera: number = 0;
 
   textHeaderButton: string = '';
 
@@ -41,9 +41,9 @@ class MyStore {
     this.maxWidth = width;
   };
 
-  // setMinWidth = (width: number) => {
-  //   this.minWidth = width;
-  // };
+  setNumberCamera = (camera: number) => {
+    this.numberCamera = camera;
+  };
 
   setWidthMask = (widthMask: number) => {
     this.widthMask = widthMask;

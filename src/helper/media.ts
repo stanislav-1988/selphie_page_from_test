@@ -37,6 +37,7 @@ export const getUserMedia = async (constraints: MediaStreamConstraints): Promise
 export const setupCameraStream = (
   videoRef: React.RefObject<HTMLVideoElement>,
   maxWidth: number,
+  numberCamera: number,
   setIsErrorPageOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorPageDetails: React.Dispatch<React.SetStateAction<string>>,
   setCameraState: React.Dispatch<React.SetStateAction<CameraState | undefined>>,
@@ -77,7 +78,7 @@ export const setupCameraStream = (
         throw new Error('No devices found for video devices');
       }
 
-      return videoDevices[0].deviceId;
+      return videoDevices[numberCamera].deviceId;
     })
     .then((deviceId) => navigator.mediaDevices.getUserMedia({
       video: {
@@ -87,12 +88,13 @@ export const setupCameraStream = (
     }))
     .then((initialStream) => {
       if (!initialStream || !videoRef.current) return;
-      const track = initialStream.getVideoTracks()[0];
+      const track = initialStream.getVideoTracks()[numberCamera];
       const capabilities = track.getCapabilities();
       let idealWidth = maxWidth;
       if (capabilities.width?.max) {
         idealWidth = Math.min(capabilities.width.max, maxWidth);
       }
+      console.debug(track);
 
       // Stop initial stream before getting high-res one
       track.stop();

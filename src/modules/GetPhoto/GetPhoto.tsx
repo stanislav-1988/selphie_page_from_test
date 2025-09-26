@@ -22,7 +22,7 @@ export const GetPhoto: FC = observer(() => {
   const [frameCollection, setFrameCollection] = useState<Array<string>>([]);
   const [renderCollection, setRenderCollection] = useState(false);
   const {
-    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, framesCount, format, isCameraRetry, maxWidth, isVideoLoaded,
+    setIsVideoLoaded, setTextHeaderButton, setVideoRef, setIsCameraRetry, setNumberCamera, framesCount, numberCamera, format, isCameraRetry, maxWidth, isVideoLoaded,
   } = myStore;
 
   useEffect(() => {
@@ -47,10 +47,12 @@ export const GetPhoto: FC = observer(() => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.debug(numberCamera);
 
   const setupCameraStreamResult = useCallback(() => setupCameraStream(
     videoRef,
     maxWidth,
+    numberCamera,
     () => [],
     () => [],
     () => [],
@@ -65,7 +67,7 @@ export const GetPhoto: FC = observer(() => {
         console.debug('result.state', result.state);
       });
       console.error('Camera initialization failed:', error);
-    }), [maxWidth, setIsVideoLoaded]);
+    }), [maxWidth, setIsVideoLoaded, numberCamera]);
 
   useEffect(() => {
     if (!isVideoLoaded && isCameraRetry) {
@@ -146,6 +148,16 @@ export const GetPhoto: FC = observer(() => {
     window.location.reload();
   };
 
+  const handleButtClick = () => {
+    setNumberCamera(numberCamera + 1);
+    if (numberCamera > 5) {
+      setNumberCamera(0);
+    }
+    setIsVideoLoaded(false);
+    setIsCameraRetry(true);
+    console.debug(numberCamera);
+  };
+
   return (
 
     <div className={styles.container}>
@@ -195,6 +207,7 @@ export const GetPhoto: FC = observer(() => {
       <div className={classNames(styles.content, (!renderCollection && isMobile() && styles.contentMobile))}>
         <button className={styles.button} type="button" onClick={handleGetPhoto}>{`${!renderCollection ? 'Собрать фото' : 'Скачать все'}`}</button>
         <button className={styles.button} type="button" onClick={handleButtonClick}>Сменить параметры</button>
+        <button className={styles.button} type="button" onClick={handleButtClick}>сменить камеру</button>
         {renderCollection && <span className={styles.span}>Вы можете загрузить отдельное фото кликнув по необходимому, можете скачать все</span>}
         <div className={styles.cardResultContainer}>
           {renderCollection && frameCollection.map((el, i) => (

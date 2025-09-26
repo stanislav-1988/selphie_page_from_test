@@ -81,12 +81,22 @@ export const setupCameraStream = (
 
       return videoDevices[0].deviceId;
     })
-    .then((deviceId) => navigator.mediaDevices.getUserMedia({
-      video: {
+    .then((deviceId) => {
+      const video = numberCamera === undefined ? {
         deviceId,
-        // width: { ideal: maxWidth },
-      },
-    }))
+        width: { ideal: maxWidth },
+        facingMode: {
+          exact: 'environment',
+        },
+      } : {
+        deviceId,
+        width: { ideal: maxWidth },
+      };
+
+      return navigator.mediaDevices.getUserMedia({
+        video,
+      });
+    })
     .then((initialStream) => {
       if (!initialStream || !videoRef.current) return;
       const track = initialStream.getVideoTracks()[0];
@@ -99,12 +109,19 @@ export const setupCameraStream = (
 
       // Stop initial stream before getting high-res one
       track.stop();
+      const video = numberCamera === undefined ? {
+        deviceId: track.getSettings().deviceId!,
+        width: { ideal: idealWidth, max: maxWidth },
+        facingMode: {
+          exact: 'environment',
+        },
+      } : {
+        deviceId: track.getSettings().deviceId!,
+        width: { ideal: idealWidth, max: maxWidth },
+      };
 
       return navigator.mediaDevices.getUserMedia({
-        video: {
-          deviceId: track.getSettings().deviceId!,
-          width: { ideal: idealWidth, max: maxWidth },
-        },
+        video,
       });
     })
     .then((finalStream) => {

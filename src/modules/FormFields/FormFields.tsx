@@ -1,5 +1,6 @@
+/* eslint-disable max-len */
 import { observer } from 'mobx-react-lite';
-import React, { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ConfirmButton } from '../../components/ConfirmButton';
@@ -10,6 +11,7 @@ import myStore from '../../store/myStore';
 import styles from './formFields.module.scss';
 
 export const FormFields: FC = observer(() => {
+  const [link, setLink] = useState('https://ebs.ru/v1/registration/start?initiatorSystem=CBIO&ResuttUrl=https://online.vtb.ru/i/bm&SrType=sr-only-photo&OGRN=1027739609391&agreement=true&SrAgreementType=AUTENTIFICATION_KBS_ESIA&SystemForAgreement=CBIO');
   const {
     maxWidth, format, framesCount, widthMask, setFormat, setFramesCount, setWidthMask, setMaxWidth, clearStor,
   } = myStore;
@@ -72,6 +74,14 @@ export const FormFields: FC = observer(() => {
             value={`${framesCount}`}
             onChange={handleFramesCount}
           />
+          <InputLabel text="переход по ссылке" />
+          <InputReusable
+            value={link}
+            onChange={(e) => {
+              setLink(e.target.value);
+            }}
+            type="text"
+          />
           <InputLabel text="Формат" />
           <select defaultValue={format} onChange={handleFormatChange} className={styles.select}>
             <option value="image/png">image/png</option>
@@ -80,6 +90,12 @@ export const FormFields: FC = observer(() => {
           </select>
           <ConfirmButton onClick={handleClickButton} value="ДАЛЕЕ" />
           <ConfirmButton onClick={handleResetButton} value="Параметры по умолчанию" />
+          <ConfirmButton
+            onClick={() => {
+              window.location.href = link;
+            }}
+            value="Тест ссылки"
+          />
         </div>
       </div>
     </div>
